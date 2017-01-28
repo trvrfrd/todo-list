@@ -18,8 +18,9 @@ function createElement(name, attrs, text) {
 }
 
 function todoLi(text) {
-  var li = createElement('li', { className: 'todo' }, text);
+  var li = createElement('li', { className: 'todo' });
   li.prepend(createElement('input', { type: 'checkbox' }));
+  li.appendChild(createElement('span', { contentEditable: true }, text));
   li.appendChild(createElement('a', { href: '#' }, 'x'));
   return li;
 }
@@ -38,4 +39,9 @@ todos.addEventListener('click', function deleteTodo(e) {
     while (node.nodeName != 'LI') node = node.parentElement;
     todos.removeChild(node);
   }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  todos.appendChild(todoLi('add more todos'));
 });
