@@ -1,0 +1,8 @@
+body {
+  font-family: monospace;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
