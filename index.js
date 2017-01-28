@@ -18,7 +18,7 @@ function createElement(name, attrs, text) {
 }
 
 function todoLi(text) {
-  var li = createElement('li', { class: 'todo' }, text);
+  var li = createElement('li', { className: 'todo' }, text);
   li.prepend(createElement('input', { type: 'checkbox' }));
   li.appendChild(createElement('a', { href: '#' }, 'x'));
   return li;
