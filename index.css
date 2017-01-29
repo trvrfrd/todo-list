@@ -14,39 +14,41 @@ body {
   padding: 15px;
 }
 
-#main h1 {
+h1 {
   font-size: 2em;
   text-align: center;
 }
 
-#main form input {
+input {
   box-sizing: border-box;
   height: 25px;
-}
-
-#main form input[type="submit"] {
   width: 25px;
 }
 
-#main form input[type="text"] {
-  width: calc(100% - 25px);
+input[type="checkbox"] {
+  margin: 0;
+  vertical-align: middle;
 }
 
-ul#todos {
+input[type="text"] {
+  width: calc(100% - 50px);
+}
+
+#todos {
   list-style-type: none;
   padding-left: 0;
 }
 
-ul#todos a {
+#todos a {
   margin-left: 1px;
   padding: 2px;
 }
 
-ul#todos span {
+#todos span {
   padding: 3px;
 }
 
-ul#todos span:focus {
+#todos span:focus {
   border: 1px solid #000;
   padding: 2px;
 }

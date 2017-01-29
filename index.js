@@ -95,6 +95,25 @@ function clearDone() {
 
 document.querySelector('#clear-done').addEventListener('click', clearDone);
 
+function checkAll() {
+  todos.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+    checkbox.checked = true;
+    checkbox.parentElement.classList.add('done');
+  });
+}
+
+function uncheckAll() {
+  todos.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+    checkbox.checked = false;
+    checkbox.parentElement.classList.remove('done');
+  });
+}
+
+document.querySelector('#check-all').addEventListener('change', function(e) {
+  e.target.checked ? checkAll() : uncheckAll();
+  saveTodos();
+});
+
 // persistence is key
 function saveTodos() {
   var items = [];
@@ -121,6 +140,8 @@ function init() {
   } else {
     todos.appendChild(todoLi({ text: 'add more todos', done: false }));
   }
+  // check-all stays checked when refreshing in Firefox
+  document.querySelector('#check-all').checked = false;
 }
 
 document.addEventListener('DOMContentLoaded', init);
