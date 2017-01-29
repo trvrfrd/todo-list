@@ -110,7 +110,7 @@ function init() {
   if (window.localStorage.getItem('todos')) {
     loadTodos();
   } else {
-    todos.appendChild(todoLi('add more todos'));
+    todos.appendChild(todoLi({ text: 'add more todos', done: false }));
   }
 }
 
