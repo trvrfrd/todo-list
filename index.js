@@ -41,7 +41,28 @@ todos.addEventListener('click', function deleteTodo(e) {
   }
 });
 
+// persistence is key
+function saveTodos() {
+  var items = [];
+  todos.querySelectorAll('li span').forEach(function(span) {
+    items.push(span.textContent);
+  });
+  window.localStorage.setItem('todos', JSON.stringify(items));
+}
 
-document.addEventListener('DOMContentLoaded', function() {
-  todos.appendChild(todoLi('add more todos'));
-});
+function loadTodos() {
+  var items = JSON.parse(window.localStorage.getItem('todos'));
+  items.forEach(function(text) {
+    todos.appendChild(todoLi(text));
+  });
+}
+
+function init() {
+  if (window.localStorage.getItem('todos')) {
+    loadTodos();
+  } else {
+    todos.appendChild(todoLi('add more todos'));
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
