@@ -3,6 +3,10 @@ body {
   font-size: 16px;
 }
 
+#main h1 {
+  font-size: 2em;
+}
+
 ul#todos {
   list-style-type: none;
   padding-left: 0;
@@ -24,4 +28,8 @@ ul#todos span:focus {
 
 li.done span {
   text-decoration: line-through;
+}
+
+.hide {
+  display: none;
 }

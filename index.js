@@ -61,6 +61,31 @@ todos.addEventListener('keydown', function editTodo(e) {
   }
 });
 
+// filters
+function showAll() {
+  todos.querySelectorAll('li').forEach(function(li) {
+    li.classList.remove('hide');
+  });
+}
+
+function showDone() {
+  showAll();
+  todos.querySelectorAll('li').forEach(function(li) {
+    if (!li.querySelector('input').checked) li.classList.add('hide');
+  });
+}
+
+function showNotDone() {
+  showAll();
+  todos.querySelectorAll('li').forEach(function(li) {
+    if (li.querySelector('input').checked) li.classList.add('hide');
+  });
+}
+
+document.querySelector('#show-all').addEventListener('click', showAll);
+document.querySelector('#show-done').addEventListener('click', showDone);
+document.querySelector('#show-not-done').addEventListener('click', showNotDone);
+
 // persistence is key
 function saveTodos() {
   var items = [];
