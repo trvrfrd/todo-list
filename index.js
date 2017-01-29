@@ -86,6 +86,15 @@ document.querySelector('#show-all').addEventListener('click', showAll);
 document.querySelector('#show-done').addEventListener('click', showDone);
 document.querySelector('#show-not-done').addEventListener('click', showNotDone);
 
+function clearDone() {
+  todos.querySelectorAll('li.done').forEach(function(todo) {
+    todos.removeChild(todo);
+  });
+  saveTodos();
+}
+
+document.querySelector('#clear-done').addEventListener('click', clearDone);
+
 // persistence is key
 function saveTodos() {
   var items = [];
