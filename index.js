@@ -5,15 +5,12 @@ var form = document.forms[0],
 
 function createElement(name, attrs, text) {
   var el = document.createElement(name);
-
   for (var attr in attrs) {
     el[attr] = attrs[attr];
   }
-
   if (text != null) {
     el.appendChild(document.createTextNode(text));
   }
-
   return el;
 }
 
@@ -31,6 +28,7 @@ form.addEventListener('submit', function createTodo(e) {
   if (!text) return false;
   todos.appendChild(todoLi(text));
   textInput.value = '';
+  saveTodos();
 });
 
 todos.addEventListener('click', function deleteTodo(e) {
@@ -38,6 +36,19 @@ todos.addEventListener('click', function deleteTodo(e) {
     var node = e.target;
     while (node.nodeName != 'LI') node = node.parentElement;
     todos.removeChild(node);
+    saveTodos();
+  }
+});
+
+// editing todo text in contentEditable span
+todos.addEventListener('keydown', function editTodo(e) {
+  if (e.keyCode == 13) { // enter
+    e.preventDefault();
+    saveTodos();
+    e.target.blur();
+  } else if (e.keyCode == 27) { //esc
+    document.execCommand('undo');
+    e.target.blur();
   }
 });
 
