@@ -14,10 +14,11 @@ function createElement(name, attrs, text) {
   return el;
 }
 
-function todoLi(text) {
+function todoLi(item) {
   var li = createElement('li', { className: 'todo' });
-  li.prepend(createElement('input', { type: 'checkbox' }));
-  li.appendChild(createElement('span', { contentEditable: true }, text));
+  if (item.done) li.classList.add('done');
+  li.prepend(createElement('input', { type: 'checkbox', checked: item.done }));
+  li.appendChild(createElement('span', { contentEditable: true }, item.text));
   li.appendChild(createElement('a', { href: '#' }, 'x'));
   return li;
 }
@@ -26,7 +27,7 @@ form.addEventListener('submit', function createTodo(e) {
   e.preventDefault();
   var text = textInput.value;
   if (!text) return false;
-  todos.appendChild(todoLi(text));
+  todos.appendChild(todoLi({ text: text, done: false }));
   textInput.value = '';
   saveTodos();
 });
@@ -36,6 +37,14 @@ todos.addEventListener('click', function deleteTodo(e) {
     var node = e.target;
     while (node.nodeName != 'LI') node = node.parentElement;
     todos.removeChild(node);
+    saveTodos();
+  }
+});
+
+// checking off todo item
+todos.addEventListener('change', function(e) {
+  if (e.target.nodeName == 'INPUT') {
+    e.target.parentElement.classList.toggle('done'); // parent == li
     saveTodos();
   }
 });
@@ -55,16 +64,20 @@ todos.addEventListener('keydown', function editTodo(e) {
 // persistence is key
 function saveTodos() {
   var items = [];
-  todos.querySelectorAll('li span').forEach(function(span) {
-    items.push(span.textContent);
+  todos.querySelectorAll('li').forEach(function(li) {
+    var item = {
+      done: li.querySelector('input').checked,
+      text: li.querySelector('span').textContent
+    }
+    items.push(item);
   });
   window.localStorage.setItem('todos', JSON.stringify(items));
 }
 
 function loadTodos() {
   var items = JSON.parse(window.localStorage.getItem('todos'));
-  items.forEach(function(text) {
-    todos.appendChild(todoLi(text));
+  items.forEach(function(item) {
+    todos.appendChild(todoLi(item));
   });
 }
 

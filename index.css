@@ -3,20 +3,25 @@ body {
   font-size: 16px;
 }
 
-ul {
+ul#todos {
   list-style-type: none;
   padding-left: 0;
 }
 
-ul a {
+ul#todos a {
+  margin-left: 1px;
   padding: 2px;
 }
 
-ul span {
+ul#todos span {
   padding: 3px;
 }
 
-ul span:focus {
+ul#todos span:focus {
   border: 1px solid #000;
   padding: 2px;
+}
+
+li.done span {
+  text-decoration: line-through;
 }
