@@ -29,7 +29,6 @@ form.addEventListener('submit', function createTodo(e) {
   if (!text) return false;
   todos.appendChild(todoLi({ text: text, done: false }));
   textInput.value = '';
-  saveTodos();
 });
 
 todos.addEventListener('click', function deleteTodo(e) {
@@ -37,7 +36,6 @@ todos.addEventListener('click', function deleteTodo(e) {
     var node = e.target;
     while (node.nodeName != 'LI') node = node.parentElement;
     todos.removeChild(node);
-    saveTodos();
   }
 });
 
@@ -45,7 +43,6 @@ todos.addEventListener('click', function deleteTodo(e) {
 todos.addEventListener('change', function(e) {
   if (e.target.nodeName == 'INPUT') {
     e.target.parentElement.classList.toggle('done'); // parent == li
-    saveTodos();
   }
 });
 
@@ -53,7 +50,6 @@ todos.addEventListener('change', function(e) {
 todos.addEventListener('keydown', function editTodo(e) {
   if (e.keyCode == 13) { // enter
     e.preventDefault();
-    saveTodos();
     e.target.blur();
   } else if (e.keyCode == 27) { //esc
     document.execCommand('undo');
@@ -90,7 +86,6 @@ function clearDone() {
   todos.querySelectorAll('li.done').forEach(function(todo) {
     todos.removeChild(todo);
   });
-  saveTodos();
 }
 
 document.querySelector('#clear-done').addEventListener('click', clearDone);
@@ -111,7 +106,6 @@ function uncheckAll() {
 
 document.querySelector('#check-all').addEventListener('change', function(e) {
   e.target.checked ? checkAll() : uncheckAll();
-  saveTodos();
 });
 
 // persistence is key
@@ -145,3 +139,4 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+window.addEventListener('beforeunload', saveTodos);
