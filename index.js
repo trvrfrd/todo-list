@@ -34,7 +34,7 @@ document.forms[0].addEventListener('submit', function createTodo(e) {
 
 list.addEventListener('click', function deleteTodo(e) {
   if (e.target.nodeName == 'A') {
-    var li = node.parentElement;
+    var li = e.target.parentElement;
     state.todos.splice(li.id, 1);
     render();
   }
