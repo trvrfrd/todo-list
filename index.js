@@ -1,7 +1,6 @@
 // globals are bad probz
-var form = document.forms[0],
-    textInput = form.querySelector('input[type="text"]'),
-    todos = document.querySelector('#todos');
+var textInput = document.querySelector('input[type="text"]'),
+    list = document.querySelector('#todos');
 
 function createElement(name, attrs, text) {
   var el = document.createElement(name);
@@ -14,8 +13,8 @@ function createElement(name, attrs, text) {
   return el;
 }
 
-function todoLi(item) {
-  var li = createElement('li', { className: 'todo' });
+function renderTodo(item, index) {
+  var li = createElement('li', { id: index, className: 'todo' });
   if (item.done) li.classList.add('done');
   li.prepend(createElement('input', { type: 'checkbox', checked: item.done }));
   li.appendChild(createElement('span', { contentEditable: true }, item.text));
@@ -23,34 +22,41 @@ function todoLi(item) {
   return li;
 }
 
-form.addEventListener('submit', function createTodo(e) {
+document.forms[0].addEventListener('submit', function createTodo(e) {
   e.preventDefault();
   var text = textInput.value;
   if (!text) return false;
-  todos.appendChild(todoLi({ text: text, done: false }));
+  var item = { text: text, done: false };
+  state.todos.push(item);
   textInput.value = '';
+  render();
 });
 
-todos.addEventListener('click', function deleteTodo(e) {
+list.addEventListener('click', function deleteTodo(e) {
   if (e.target.nodeName == 'A') {
-    var node = e.target;
-    while (node.nodeName != 'LI') node = node.parentElement;
-    todos.removeChild(node);
+    var li = node.parentElement;
+    state.todos.splice(li.id, 1);
+    render();
   }
 });
 
 // checking off todo item
-todos.addEventListener('change', function(e) {
+list.addEventListener('change', function(e) {
   if (e.target.nodeName == 'INPUT') {
-    e.target.parentElement.classList.toggle('done'); // parent == li
+    var li = e.target.parentElement;
+    state.todos[li.id].done = e.target.checked;
+    render();
   }
 });
 
 // editing todo text in contentEditable span
-todos.addEventListener('keydown', function editTodo(e) {
+list.addEventListener('keydown', function editTodo(e) {
   if (e.keyCode == 13) { // enter
     e.preventDefault();
+    var li = e.target.parentElement;
+    state.todos[li.id].text = e.target.textContent;
     e.target.blur();
+    render();
   } else if (e.keyCode == 27) { //esc
     document.execCommand('undo');
     e.target.blur();
@@ -58,85 +64,77 @@ todos.addEventListener('keydown', function editTodo(e) {
 });
 
 // filters
-function showAll() {
-  todos.querySelectorAll('li').forEach(function(li) {
-    li.classList.remove('hide');
-  });
-}
+document.querySelector('#show-all').addEventListener('click', function() {
+  state.filter = 'all';
+  render();
+});
 
-function showDone() {
-  showAll();
-  todos.querySelectorAll('li').forEach(function(li) {
-    if (!li.querySelector('input').checked) li.classList.add('hide');
-  });
-}
+document.querySelector('#show-done').addEventListener('click', function() {
+  state.filter = 'done';
+  render();
+});
 
-function showNotDone() {
-  showAll();
-  todos.querySelectorAll('li').forEach(function(li) {
-    if (li.querySelector('input').checked) li.classList.add('hide');
-  });
-}
-
-document.querySelector('#show-all').addEventListener('click', showAll);
-document.querySelector('#show-done').addEventListener('click', showDone);
-document.querySelector('#show-not-done').addEventListener('click', showNotDone);
+document.querySelector('#show-not-done').addEventListener('click', function() {
+  state.filter = 'not-done';
+  render();
+});
 
 function clearDone() {
-  todos.querySelectorAll('li.done').forEach(function(todo) {
-    todos.removeChild(todo);
+  state.todos = state.todos.filter(function(todo) {
+    return !todo.done;
   });
+  render();
 }
 
 document.querySelector('#clear-done').addEventListener('click', clearDone);
 
-function checkAll() {
-  todos.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
-    checkbox.checked = true;
-    checkbox.parentElement.classList.add('done');
+function markAll(doneness) {
+  // only want to check currently displayed todos, hence we iterate over the lis
+  // instead of the application state
+  list.querySelectorAll('li').forEach(function(li) {
+    state.todos[li.id].done = doneness;
   });
-}
-
-function uncheckAll() {
-  todos.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
-    checkbox.checked = false;
-    checkbox.parentElement.classList.remove('done');
-  });
+  render();
 }
 
 document.querySelector('#check-all').addEventListener('change', function(e) {
-  e.target.checked ? checkAll() : uncheckAll();
+  markAll(e.target.checked);
 });
 
 // persistence is key
-function saveTodos() {
-  var items = [];
-  todos.querySelectorAll('li').forEach(function(li) {
-    var item = {
-      done: li.querySelector('input').checked,
-      text: li.querySelector('span').textContent
-    }
-    items.push(item);
-  });
-  window.localStorage.setItem('todos', JSON.stringify(items));
+function saveState() {
+  window.localStorage.setItem('todo-list', JSON.stringify(state));
 }
 
-function loadTodos() {
-  var items = JSON.parse(window.localStorage.getItem('todos'));
-  items.forEach(function(item) {
-    todos.appendChild(todoLi(item));
+function loadState() {
+  return JSON.parse(window.localStorage.getItem('todo-list'));
+}
+
+function render() {
+  list.innerHTML = '';
+  state.todos.forEach(function(item, index) {
+    if (shouldRender(item)) {
+      list.appendChild(renderTodo(item, index));
+    }
   });
+}
+
+function shouldRender(item) {
+  return (state.filter == 'all') ||
+         (state.filter == 'done' && item.done) ||
+         (state.filter == 'not-done' && !item.done)
 }
 
 function init() {
-  if (window.localStorage.getItem('todos')) {
-    loadTodos();
-  } else {
-    todos.appendChild(todoLi({ text: 'add more todos', done: false }));
-  }
+  // intentional global state WHOA BAD TIMES
+  state = loadState() || {
+    filter: 'all',
+    todos: [{ text: 'add more todos', done: false }]
+  };
+  render();
   // check-all stays checked when refreshing in Firefox
   document.querySelector('#check-all').checked = false;
 }
 
 document.addEventListener('DOMContentLoaded', init);
-window.addEventListener('beforeunload', saveTodos);
+window.addEventListener('beforeunload', saveState);
