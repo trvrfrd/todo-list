@@ -19,6 +19,10 @@ h1 {
   text-align: center;
 }
 
+a {
+  text-decoration: none;
+}
+
 input {
   box-sizing: border-box;
   height: 25px;
@@ -40,6 +44,7 @@ input[type="text"] {
 }
 
 #todos a {
+  color: red;
   margin-left: 1px;
   padding: 2px;
 }
@@ -63,4 +68,8 @@ li.done span {
 
 footer {
   text-align: center;
+}
+
+#filters a.active {
+  text-decoration: underline;
 }

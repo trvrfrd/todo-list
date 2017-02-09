@@ -19,11 +19,12 @@ TodoAppUI.prototype.init = function init() {
   document.querySelector('#check-all').checked = false;
   this.render();
   this.initListeners();
+  document.querySelector('input[type="text"]').focus();
 }
 
 TodoAppUI.prototype.render = function render() {
   this.renderList(this.app.todoList);
-  this.renderFilter(this.app.filter);
+  this.updateFilters(this.app.filter);
   this.filterList(this.app.filter);
 }
 
@@ -44,10 +45,12 @@ TodoAppUI.prototype.renderList = function renderList(list) {
   });
 }
 
-TodoAppUI.prototype.renderFilter = function renderFilter(show) {
-
+TodoAppUI.prototype.updateFilters = function updateFilters(show) {
+  document.querySelector('#filters').querySelectorAll('a').forEach(function(a) {
+    a.classList.remove('active');
+    if (show == a.id) a.classList.add('active');
+  });
 }
-
 
 TodoAppUI.prototype.filterList = function filterList(show) {
   this.listRoot.querySelectorAll('li').forEach(function(li) {
@@ -69,6 +72,8 @@ TodoAppUI.prototype.initListeners = function initListeners() {
     self.app.todoList.add({text: text, done: false});
     input.value = '';
     self.render();
+    // obnoxious hack to make sure cursor reappears after submitting in Firefox
+    input.blur(); input.focus();
   });
 
   var list = document.querySelector('#todos');
@@ -108,5 +113,12 @@ TodoAppUI.prototype.initListeners = function initListeners() {
   document.querySelector('#check-all').addEventListener('change', function(e) {
     self.app.todoList.markAll.call(self.app.todoList, e.target.checked);
     self.render();
+  });
+
+  document.querySelector('#filters').addEventListener('click', function(e) {
+    if (e.target.nodeName == 'A') {
+      self.app.filter = e.target.id;
+      self.render();
+    }
   });
 }
