@@ -106,12 +106,12 @@ TodoAppUI.prototype.initListeners = function initListeners() {
   });
 
   document.querySelector('#clear-done').addEventListener('click', function() {
-    self.app.todoList.clearDone.call(self.app.todoList);
+    self.app.todoList.clearDone();
     self.render();
   });
 
   document.querySelector('#check-all').addEventListener('change', function(e) {
-    self.app.todoList.markAll.call(self.app.todoList, e.target.checked);
+    self.app.todoList.markAll(e.target.checked);
     self.render();
   });
 
