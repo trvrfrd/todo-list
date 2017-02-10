@@ -43,11 +43,9 @@ TodoList.prototype.clearDone = function clearDone() {
 }
 
 TodoList.prototype.loadState = function loadState() {
-  return JSON.parse(window.localStorage.getItem('todo-list'));
+  return JSON.parse(window.localStorage.getItem('todoList'));
 }
 
 TodoList.prototype.saveState = function saveState() {
-  // just for funsies since I've changed the item name once or twice
-  window.localStorage.clear();
-  window.localStorage.setItem('todo-list', JSON.stringify(this));
+  window.localStorage.setItem('todoList', JSON.stringify(this));
 }
