@@ -8,6 +8,12 @@ function TodoList() {
   window.addEventListener('beforeunload', this.saveState.bind(this));
 }
 
+Object.defineProperty(TodoList.prototype, 'length', {
+  get() {
+    return this.items.length;
+  }
+});
+
 TodoList.prototype.updateFilter = function updateFilter(str) {
   return this.filter = str;
 }

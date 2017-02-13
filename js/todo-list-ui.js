@@ -26,6 +26,7 @@ TodoListUI.prototype.render = function render() {
   this.renderList(this.list);
   this.updateFilters(this.list.filter);
   this.filterList(this.list.filter);
+  this.updateCount(this.list);
 }
 
 TodoListUI.prototype.renderItem = function renderItem(item, index) {
@@ -60,6 +61,18 @@ TodoListUI.prototype.filterList = function filterList(show) {
     else if (show == 'not-done' && li.classList.contains('done'))
       li.classList.add('hide');
   });
+}
+
+TodoListUI.prototype.updateCount = function updateCount(list) {
+  var span = document.querySelector('#count'),
+      count = list.length;
+  if (count == 0) {
+    span.textContent = 'all done, nice work!';
+  } else if (count == 1) {
+    span.textContent = '1 todo';
+  } else {
+    span.textContent = count + ' todos';
+  }
 }
 
 TodoListUI.prototype.initListeners = function initListeners() {
