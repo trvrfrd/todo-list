@@ -62,13 +62,13 @@
 
     updateCount: function updateCount(list) {
       var span = document.querySelector('#count'),
-      count = list.length;
+        count = list.length;
       if (count == 0) {
         span.textContent = 'all done, nice work!';
       } else if (count == 1) {
-        span.textContent = '1 todo';
+        span.textContent = '1 item left';
       } else {
-        span.textContent = count + ' todos';
+        span.textContent = count + ' items left';
       }
     },
 
@@ -77,7 +77,7 @@
       document.forms[0].addEventListener('submit', function fireCreate(e) {
         e.preventDefault();
         var input = e.target.querySelector('input[type="text"]'),
-        text = input.value;
+          text = input.value;
         if (!text) return false;
         self.list.add({text: text, done: false});
         input.value = '';
@@ -130,6 +130,12 @@
           self.list.filter = e.target.id;
           self.render();
         }
+      });
+
+      document.querySelector('#style').addEventListener('click', function toggleStyle(e) {
+        document.body.classList.toggle('lofi');
+        document.body.classList.toggle('modern');
+        this.textContent = 'style: ' + document.body.classList;
       });
     }
   };

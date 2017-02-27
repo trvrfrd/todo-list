@@ -6,21 +6,23 @@
   <title>todo list</title>
   <link rel="stylesheet" href="index.css">
 </head>
-<body>
+<body class="modern">
+  <h1>todo list</h1>
   <section id="main">
-    <h1>todo list</h1>
-    <p id="count"></p>
     <form action="">
-      <input type="checkbox" id="check-all"><input type="text" placeholder="what?"><input type="submit" value="+">
+      <input type="checkbox" id="check-all"><input type="text" placeholder="what?">
     </form>
     <ul id="todos"></ul>
     <footer>
+      <p id="count"></p>
       <nav id="filters">
         <a href="#" id="all">all</a> |
         <a href="#" id="not-done">not done</a> |
         <a href="#" id="done">done</a>
       </nav>
       <a href="#" id="clear-done">clear done</a>
+      <hr>
+      <p><a href="#" id="style">style: modern</a></p>
     </footer>
   </div>
   <script src="js/todo-list.js"></script>
