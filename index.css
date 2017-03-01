@@ -25,16 +25,25 @@ h1 {
 
 .modern h1 {
   background: #43a047;
+  border-bottom: 3px solid #1b5e20;
+  border-right: 3px solid #1b5e20;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   color: #fafafa;
   font-weight: normal;
   margin: 0;
-  padding: 20px;
+  padding: 17px;
 }
 
 #main {
   text-align: center;
+}
+
+.modern #main {
+  border-bottom: 3px solid #dadada;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-right: 3px solid #dadada;
 }
 
 a {
@@ -43,26 +52,25 @@ a {
 
 input {
   box-sizing: border-box;
-  height: 25px;
-  width: 25px;
 }
 
 input[type="checkbox"] {
-  margin: 0;
+  height: 15px;
+  margin: 5px;
   vertical-align: middle;
+  width: 15px;
 }
 
 input[type="text"] {
+  font-size: 1em;
+  height: 25px;
+  padding: 3px;
   width: calc(100% - 25px);
 }
 
 .modern input[type="text"] {
   border: none;
-}
-
-.modern input[type="submit"] {
-  border: 1px solid #dadada;
-  font-weight: bold;
+  outline: none;
 }
 
 #todos {
@@ -76,9 +84,14 @@ input[type="text"] {
 }
 
 #todos a {
-  color: red;
+  color: #f00;
   margin-left: 1px;
   padding: 2px;
+}
+
+.modern #todos a {
+  float: right;
+  padding: 3px 8px;
 }
 
 #todos span {
