@@ -46,23 +46,23 @@
     updateFilters: function updateFilters (filter) {
       document.querySelector('#filters').querySelectorAll('a').forEach(function (a) {
         a.classList.remove('active')
-        if (filter == a.id) a.classList.add('active')
+        if (filter === a.id) a.classList.add('active')
       })
     },
 
     filterList: function filterList (show) {
       this.root.childNodes.forEach(function (li) {
         li.classList.remove('hide')
-        if (show == 'done' && !li.classList.contains('done')) { li.classList.add('hide') } else if (show == 'not-done' && li.classList.contains('done')) { li.classList.add('hide') }
+        if (show === 'done' && !li.classList.contains('done')) { li.classList.add('hide') } else if (show === 'not-done' && li.classList.contains('done')) { li.classList.add('hide') }
       })
     },
 
     updateCount: function updateCount (list) {
-      var span = document.querySelector('#count'),
-        count = list.length
-      if (count == 0) {
+      var span = document.querySelector('#count')
+      var count = list.length
+      if (count === 0) {
         span.textContent = 'all done, nice work!'
-      } else if (count == 1) {
+      } else if (count === 1) {
         span.textContent = '1 item left'
       } else {
         span.textContent = count + ' items left'
@@ -73,8 +73,8 @@
       var self = this
       document.forms[0].addEventListener('submit', function fireCreate (e) {
         e.preventDefault()
-        var input = e.target.querySelector('input[type="text"]'),
-          text = input.value
+        var input = e.target.querySelector('input[type="text"]')
+        var text = input.value
         if (!text) return false
         self.list.add({text: text, done: false})
         input.value = ''
@@ -85,7 +85,7 @@
 
       var list = document.querySelector('#todos')
       list.addEventListener('click', function fireDelete (e) {
-        if (e.target.nodeName == 'A') {
+        if (e.target.nodeName === 'A') {
           var li = e.target.parentElement
           self.list.remove(li.id)
           self.render()
@@ -93,7 +93,7 @@
       })
 
       list.addEventListener('change', function fireComplete (e) {
-        if (e.target.nodeName == 'INPUT') {
+        if (e.target.nodeName === 'INPUT') {
           var li = e.target.parentElement
           self.list.markDone(li.id, e.target.checked)
           self.render()
@@ -101,12 +101,12 @@
       })
 
       list.addEventListener('keydown', function fireEdit (e) {
-        if (e.keyCode == 13) { // enter
+        if (e.keyCode === 13) { // enter
           e.preventDefault()
           var li = e.target.parentElement
           self.list.updateText(li.id, e.target.textContent)
           e.target.blur()
-        } else if (e.keyCode == 27) { // esc
+        } else if (e.keyCode === 27) { // esc
           document.execCommand('undo')
           e.target.blur()
         }
@@ -123,7 +123,7 @@
       })
 
       document.querySelector('#filters').addEventListener('click', function (e) {
-        if (e.target.nodeName == 'A') {
+        if (e.target.nodeName === 'A') {
           self.list.filter = e.target.id
           self.render()
         }

@@ -1,7 +1,8 @@
 (function (exports) {
   var todoListProto = {
     updateFilter: function updateFilter (str) {
-      return this.filter = str
+      this.filter = str
+      return str
     },
 
     add: function add (todo) {
@@ -17,7 +18,7 @@
     },
 
     remove: function remove (i) {
-      this.items.splice(i, 1)[0]
+      return this.items.splice(i, 1)[0]
     },
 
     forEach: function forEach (fn) {
