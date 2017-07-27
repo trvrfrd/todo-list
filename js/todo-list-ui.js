@@ -113,6 +113,7 @@
       })
 
       document.querySelector('#clear-done').addEventListener('click', function () {
+        document.querySelector('#check-all').checked = false
         self.list.clearDone()
         self.render()
       })
